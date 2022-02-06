@@ -10,12 +10,19 @@ import Test from './components/test';
 import DoctorRegistration from './components/doctor-registration';
 import DoctorSlots from './components/doctor-slots';
 import UpdateDoctor from './components/update-doctor';
+import BookAppointment from './components/book-appointment';
+import DoctorHome from './components/doctor-home';
+import PatientInfo from './components/patient-info';
+import Login from './components/login';
+import PatientRegistration from './components/patient-registration';
 const App = () =>  {
   return (
     <Router>
     <div className="app">
       <Routes>
-        <Route path={'/'} element={<DoctorList/>}>
+      <Route path={'/'} element={<Login/>}>
+        </Route>
+        <Route path={'/doctor/'} element={<DoctorList/>}>
         </Route>
         <Route 
         path="/doctor/doctordetails/:id"
@@ -36,6 +43,22 @@ const App = () =>  {
         <Route 
         path="/doctor/update/:id"
         element={<UpdateDoctor/>}
+        />
+        <Route 
+        path="/doctor/bookappointment/"
+        element={<BookAppointment/>}
+        />
+        <Route 
+        path="/doctor/home/"
+        element={<DoctorHome/>}
+        />
+        <Route
+        path="/doctor/viewappointments"
+        element={<PatientInfo/>}
+        />
+        <Route
+        path="/patient/registration"
+        element={<PatientRegistration/>}
         />
         </Routes>
        </div>

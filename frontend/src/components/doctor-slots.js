@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import {Switch,Route,Link} from "react-router-dom";
 import DoctorDataService from "../services/doctors";
+import PatientDataService from "../services/patients"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
@@ -11,7 +12,8 @@ const DoctorSlots=(props)=> {
 
     const { id } = useParams()
     const location = useLocation();
-    let doc = location.state
+    let doc = location.state.doc
+    let user = location.state.user
     let week = {
 
     }
@@ -95,6 +97,7 @@ const DoctorSlots=(props)=> {
              for( let i=0; i<timeslot;i++){
                  t[i] = cur+"-"+addTimes(cur,durationtime);
                    time = {
+                    "slotnumber":i,
                     "timeslot":t[i],
                     "available":"Yes"
                 }
@@ -153,9 +156,77 @@ const DoctorSlots=(props)=> {
 
 
    const call = ()=>{
-      
-        let week1 = [
-            {
+//     let w = [];
+//         for(let i=1;i<=5;i++){
+//             for( let j=1;j<=7;j++){
+//                w = [
+//                    {
+//                     "week":i,
+//                    "day":j,
+//                    "available": mavailable,
+//                    "starttime": mstime,
+//                     "endtime": metime,
+//                     "slotduration":mslotduration,
+//                     "timeslots":createslot(mstime,metime,mslotduration)
+//                },
+//                {
+//                     "week":i,
+//                     "day":j,
+//                     "available": tuavailable,
+//                     "starttime": tustime,
+//                     "endtime": tuetime,
+//                     "slotduration":tuslotduration,
+//                     "timeslots":createslot(tustime,tuetime,tuslotduration)
+//                },
+//                {
+//                 "week":i,
+//                 "day":j,
+//                 "available": wavailable,
+//                 "starttime": wstime,
+//                 "endtime": wetime,
+//                 "slotduration":wslotduration,
+//                 "timeslots":createslot(wstime,wetime,wslotduration)
+//            },
+//            {
+//             "week":i,
+//             "day":j,
+//             "available": thavailable,
+//             "starttime": thstime,
+//             "endtime": thetime,
+//             "slotduration":thslotduration,
+//             "timeslots":createslot(thstime,thetime,thslotduration)
+//        },
+//        {
+//         "week":i,
+//         "day":j,
+//         "available": favailable,
+//         "starttime": fstime,
+//         "endtime": fetime,
+//         "slotduration":fslotduration,
+//         "timeslots":createslot(fstime,fetime,fslotduration)
+//    },
+//    {
+//     "week":i,
+//     "day":j,
+//     "available": saavailable,
+//     "starttime": sastime,
+//     "endtime": saetime,
+//     "slotduration":saslotduration,
+//     "timeslots":createslot(sastime,tuetime,tuslotduration)
+// },
+
+//                ]
+//         }
+//     } 
+//     console.log(w)
+            
+
+
+
+    let week1 = [
+                {
+               
+                "day": "1",
                 "available":mavailable,
                 "starttime": mstime,
                 "endtime": metime,
@@ -163,6 +234,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(mstime,metime,mslotduration)
             },
             {
+               
+                "day": "2",
                 "available":tuavailable,
                 "starttime": tustime,
                 "endtime": tuetime,
@@ -170,6 +243,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(tustime,tuetime,tuslotduration)
             },
             {
+               
+                "day": "3",
                 "available":wavailable,
                 "starttime": wstime,
                 "endtime": wetime,
@@ -177,6 +252,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(wstime,wetime,wslotduration)
             },
             {
+               
+                "day": "4",
                 "available":thavailable,
                 "starttime": thstime,
                 "endtime": thetime,
@@ -184,6 +261,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(thstime,thetime,thslotduration)
             },
             {
+                
+                "day": "5",
                 "available":favailable,
                 "starttime": fstime,
                 "endtime": fetime,
@@ -191,6 +270,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(fstime,fetime,fslotduration)
             },
             {
+                
+                "day": "6",
                 "available":saavailable,
                 "starttime": sastime,
                 "endtime": saetime,
@@ -198,6 +279,8 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(sastime,saetime,saslotduration)
             },
             {
+                
+                "day": "7",
                 "available":suavailable,
                 "starttime": sustime,
                 "endtime": suetime,
@@ -205,25 +288,35 @@ const DoctorSlots=(props)=> {
                 "timeslots":createslot(sustime,suetime,suslotduration)
             },
         ]
+        
 
         let week2 = week1;
-        let week3 = week1;
-        let week4 = week1;
-        let week5 = week1;
-        week =  [
+        let week3 = week1
+        let week4  = week1
+        let week5 = week1
+        
+        // week =  {
 
-                week1,
-                week2,
-                week3,
-                week4,
-                week5,
-            
-            ]
-        doc.weeks = week
+        //         week1,
+        //         week2,
+        //         week3,
+        //         week4,
+        //         week5,
+        // }
+       let myweeks = [...week1,...week2,...week3,...week4,...week5];
+        // let weeksa = ['a','b','c']
+        // let weeksb = ['a','b','c']
+        // weeksa.concat(weeksb);
+        // console.log(weeksa)
+        console.log(myweeks)
+        doc['weeks'] = myweeks
         console.log(doc)
+        
         DoctorDataService.postDoc(doc)
         .then((response)=>{
             console.log(response.data)
+            user.iid = response.data._id
+            PatientDataService.registerUser(user)
         })
         .catch((e)=>{
             console.log(e)

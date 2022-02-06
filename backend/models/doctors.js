@@ -14,21 +14,20 @@ const doctorSchema = new Schema({
     Country:{type:String},
     Qualification:{type:String},
     weeks:[
-        [
             {
-                Day:{type:String},
+                day:{type:String},
                 available:{type:String},
                 starttime:{type:String},
                 endtime:{type:String},
                 slotduration:{type:String},
                 timeslots:[{
+                    slotnumber:{},
                     timeslot:{},
                     available:{}
                 
                     
                 }]
             }
-        ]
         ]
         
         })

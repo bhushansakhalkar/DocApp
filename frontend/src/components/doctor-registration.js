@@ -9,7 +9,10 @@ const DoctorRegistration=(props)=> {
 
     const { id } = useParams()
     const navigate = useNavigate();
-   const doc = {
+   let user = {
+       
+   }
+    const doc = {
      Fname:"",
      Lname:"",
      Address:"",
@@ -19,7 +22,6 @@ const DoctorRegistration=(props)=> {
      Postcode:"",
      City:"",
      Qualification:"",
-     weeks:[]
     }
     const [fname,setfName] = useState("")
     const [lname,setlName] = useState("")
@@ -30,10 +32,10 @@ const DoctorRegistration=(props)=> {
     const [postcode,setpostcode] = useState("")
     const [city,setcity] = useState("")
     const [qualification,setqualification] = useState("")
+    const [username,setUsername] = useState('')
+    const [password,setPassword] = useState('')
+    const [email,setEmail] = useState('')
     
-    const toComponentB=()=>{
-        navigate('/doctor/slots',{state:doc});
-          }
         
     // const getDoctorDetails = id =>{
     //     console.log(id)
@@ -65,13 +67,26 @@ const DoctorRegistration=(props)=> {
         doc.Specialization = specialization;
         doc.Postcode = postcode;
         doc.City = city;
+        user.username = username;
+        user.password = password;
+        user.email = email;
+        user.account_type = 'Doctor'
         console.log(doc)
-        navigate('/doctor/slots',{state:doc});
+        navigate('/doctor/slots',{state:{doc:doc,user:user}});
    }
   return (
     <div className="App">
     <h1> Registration Page</h1>
     <br/><br/><br/><br/>
+    <label>Username: </label><input name="username"  onChange={(e)=>{
+        setUsername(e.target.value)
+    }} /><br/>
+    <label>Password: </label><input name="password"  onChange={(e)=>{
+        setPassword(e.target.value)
+    }} /><br/>
+     <label>Email: </label><input name="email"  onChange={(e)=>{
+        setEmail(e.target.value)
+    }} /><br/>
     <label>FirstName: </label><input name="fname"  onChange={(e)=>{
         setfName(e.target.value)
     }} /><br/>
