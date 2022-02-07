@@ -24,7 +24,26 @@ app.get('/', function (req, res) {
 
 });
 
+//Swagger
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI    = require('swagger-ui-express'); 
+const swaggerOptions = {
+    swaggerDefinition: {
+      info: {
+        title: 'Doctor Appointment Application',
+        description: 'Doctor Appointment Application',
+        servers: [{
+          url: "http://localhost:5000",
+        }]
+      }
+    },
+    //File path to where the api are located eg: ['routes/*.js']
+    apis: ["api/*.js"]
+  };
 
+  const SwaggerDocs = swaggerJsDoc(swaggerOptions);
+
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(SwaggerDocs));
 
 app.use('/api/doctor',doctorList);
 app.use('/api/patient',PatientList);

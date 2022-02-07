@@ -9,7 +9,18 @@ const bcrypt = require('bcryptjs')
 const Usermodel = require('../models/Usermodel')
 const JWT_SECRET = "c7b6279efb87ef30afcc4e403e2ab580eb02f2f15e51ee0259b5114c9b6c35d0f93222085d0f32df0c6c498867b02c137ecd4921f2434b87a9d3c7f36077e0d1";
 
-
+/**
+ * @swagger
+ * /api/login:
+ *  post: 
+ *    description: Doctor login API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Invalid username/password
+ *      200:
+ *        description: Login successfull
+ */
 router.post('/api/login', async(req, res) => {
 
     const { username, password } = req.body;
@@ -109,6 +120,16 @@ router.route('/').get(authenticateToken,(req,res)=>{
 
     
 });
+
+/**
+ * @swagger
+ * /getPatientByid/:id:
+ *  post: 
+ *    description: Fetching patient by Id - API
+ *    tags: [Doctor]
+ * 
+ * 
+ */
 router.route('/getPatientByid/:id').get(authenticateToken, (req, res) => {
 
     patient.findById(req.params.id)
@@ -146,12 +167,32 @@ function paginatedResults(model){
     }
 }
 
+/**
+ * @swagger
+ * /doctordetails/:id:
+ *  get: 
+ *    description: Fetching doctor by Id - API
+ *    tags: [Doctor]
+ * 
+ * 
+ */
 router.route('/doctordetails/:id').get(authenticateToken,(req,res)=>{
     Doctor.findById(req.params.id)
     .then(doc=> res.json(doc))
 })
 
-
+/**
+ * @swagger
+ * /doctordetails/slots/:
+ *  post: 
+ *    description: Creating doctor slots - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Login successfull
+ */
 //while appointment change slots
 router.route('/doctordetails/slots/').post((req,res)=>{
     console.log(req.body.id)
@@ -192,6 +233,18 @@ router.route('/doctordetails/slots/').post((req,res)=>{
     })
 })
 
+/**
+ * @swagger
+ * /update/:id:
+ *  put: 
+ *    description: Updating doctor's profile - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 //overall update
 router.route('/update/:id').put((req,res)=>{
     const id = req.params.id;
@@ -263,7 +316,18 @@ router.route('/update/:id').put((req,res)=>{
 // })
 
 
-
+/**
+ * @swagger
+ * /updateday/:id:
+ *  put: 
+ *    description: Updating doctor's day timings - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 //update day
 router.route('/updateday/:id').put((req,res)=>{
     const id = req.params.id
@@ -301,7 +365,18 @@ Doctor.findOneAndUpdate(
 
 
 
-
+/**
+ * @swagger
+ * /updateday/:id:
+ *  put: 
+ *    description: Updating doctor's slots  - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 router.route('/updateslot/').put((req,res)=>{
     const id = req.body.id
     let d = req.body.day
@@ -354,7 +429,18 @@ Doctor.findOneAndUpdate(
 })
 
 
-
+/**
+ * @swagger
+ * /updateslotandavailability/:
+ *  put: 
+ *    description: Updating doctor's slot availability - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 router.route('/updateslotandavailability/').put((req,res)=>{
     const id = req.body.id
     let d = req.body.day
@@ -409,7 +495,18 @@ Doctor.findOneAndUpdate(
     .catch(e=>console.log(e))
 })
 
-
+/**
+ * @swagger
+ * /add/:
+ *  post: 
+ *    description: Creating doctor's profile - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 router.route('/add/').post((req,res)=>{
     const Fname = req.body.Fname;
     const Lname = req.body.Lname;
@@ -474,6 +571,18 @@ router.route('/updatePrescription/:id').put((req,res)=>{
 //     res.json(abcd)
 // })
 
+/**
+ * @swagger
+ * /getappointmentByDate/:date/:did:
+ *  get: 
+ *    description: Fetching patient appoitments by ID for doctors - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 //Patient Appointments
 router.get('/getappointmentByDate/:date/:did',authenticateToken, async(req, res) => {
     const dateString = req.params.date
@@ -530,7 +639,18 @@ router.get('/getappointmentByDate/:date/:did',authenticateToken, async(req, res)
 
 // })
 
-
+/**
+ * @swagger
+ * /getPatDet:
+ *  get: 
+ *    description: Fetching patient info on doctor's click - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Updated Successfully
+ */
 //get Patient info on doctor's click
 router.get('/getPatDet', async(req, res) => {
 
@@ -550,7 +670,18 @@ router.get('/getPatDet', async(req, res) => {
 
 });
 
-
+/**
+ * @swagger
+ * /deletePatient/:id:
+ *  delete: 
+ *    description: Deleting Patient profile - API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Patient deleted
+ */
 router.delete('/deletePatient/:id', async(req, res) => {
     const tempId = req.params.id
     console.log(tempId)
@@ -565,6 +696,18 @@ router.delete('/deletePatient/:id', async(req, res) => {
 
 });
 
+/**
+ * @swagger
+ * /deleteDoctor/:id:
+ *  delete: 
+ *    description: Deleting doctor's profile - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Doctor deleted
+ */
 router.delete('/deleteDoctor/:id', async(req, res) => {
     const tempId = req.params.id
     console.log(tempId)
@@ -579,7 +722,18 @@ router.delete('/deleteDoctor/:id', async(req, res) => {
 
 });
 
-
+/**
+ * @swagger
+ * /deleteDoctor/:id:
+ *  post: 
+ *    description: Fetching patient info on doctor's click - API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Doctor deleted
+ */
 //Post appointment
 router.post('/appointment', async(req, res) => {
     const patApp = new appointment({
@@ -602,6 +756,24 @@ router.post('/appointment', async(req, res) => {
         res.status(400).json({ message: err.message })
     }
 })
+
+
+
+
+/**
+ * @swagger
+ * /deleteDoctor/:id:
+ *  post: 
+ *    description: Creating patient profile - API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Patient added
+ */
+
+
 
 
 
@@ -641,6 +813,18 @@ router.route('/patient').post((req, res) => {
 
 })
 
+/**
+ * @swagger
+ * /updateslotandavailability/:
+ *  put: 
+ *    description: Update patient profile - API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Patient doesn't exist!
+ *      200:
+ *        description: Updated Successfully
+ */
 //Update Patient
 router.put('/updatePatient/:id', async(req, res) => {
     try {
