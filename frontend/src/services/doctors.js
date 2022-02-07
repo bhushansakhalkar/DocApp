@@ -17,8 +17,15 @@ class DoctorDataService{
             
         })
     }
-    getAppointmentsByDate(date,id){
-        return http.get('doctor/getappointmentByDate/'+date+'/'+id)
+    getAppointmentsByDate(date,id,token){
+        return http.get('doctor/getappointmentByDate/'+date+'/'+id,{
+        headers:{
+            'Authorization':'Bearer '+token
+        }
+        })
+    }
+    addPrescription(id,data){
+        return http.put('doctor/updatePrescription/'+id,data)
     }
     postDoc(data){
         return http.post('doctor/add/',data)

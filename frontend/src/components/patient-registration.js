@@ -70,7 +70,14 @@ const PatientRegistration = ()=>{
                     console.log("user created")
                     navigate("/")
                 })
-                .catch(e=>console.log(e))
+                .catch(e=>{
+                    console.log(e)
+                    alert("Username Already in use")
+                    PatientDataService.DeletePatient(user.iid)
+                navigate("/")
+                }
+                    
+                    )
                 
             
         })

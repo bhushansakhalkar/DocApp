@@ -445,6 +445,23 @@ router.route('/add/').post((req,res)=>{
 
 })
 
+router.route('/updatePrescription/:id').put((req,res)=>{
+    const id = req.params.id
+    const prescription = req.body.prescription
+    console.log(prescription)
+    console.log(id)
+    
+    appointment.findOneAndUpdate({_id:id},{Prescription:prescription})
+    .then((response)=>{
+        res.status(200).json(response)
+        console.log("Sent")
+    })
+    .catch(e=>{
+        console.log(e)
+    })
+
+})
+
 
 // const cache = require('D:/React/doc_app/routeCache')
 
@@ -458,7 +475,7 @@ router.route('/add/').post((req,res)=>{
 // })
 
 //Patient Appointments
-router.get('/getappointmentByDate/:date/:did', async(req, res) => {
+router.get('/getappointmentByDate/:date/:did',authenticateToken, async(req, res) => {
     const dateString = req.params.date
     const docId = req.params.did
     console.log(docId)
@@ -585,6 +602,8 @@ router.post('/appointment', async(req, res) => {
         res.status(400).json({ message: err.message })
     }
 })
+
+
 
 
 //Post Patient

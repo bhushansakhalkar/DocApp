@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from "react";
-import {Switch,Route,Link} from "react-router-dom";
+import {Switch,Route,Link,useNavigate} from "react-router-dom";
 import DoctorDataService from "../services/doctors";
 import PatientDataService from "../services/patients"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
+import DeleteDoctor from "./doctor-delete";
 
 
 
@@ -17,6 +18,7 @@ const DoctorSlots=(props)=> {
     let week = {
 
     }
+    const navigate = useNavigate();
 
     const [mavailable,setmavailable] = useState("Yes")
     const [mstime,setmstime] = useState("")
@@ -319,9 +321,13 @@ const DoctorSlots=(props)=> {
             PatientDataService.registerUser(user)
             .then(()=>{
                 console.log("Doctor/User Added")
+                navigate("/")
             })
             .catch((e)=>{
                 console.log(e)
+                alert("Username Already in use")
+                DoctorDataService.DeleteDoctor(user.iid)
+                navigate("/")
             })
         })
         .catch((e)=>{
@@ -333,21 +339,21 @@ const DoctorSlots=(props)=> {
     <div className="App">
     <h1 style={{textAlign:'center'}}> Slot Registration Page</h1>
     <br/><br/><br/><br/>
-    <label className="form-control">Monday: </label>
-    <label className="form-control">Open</label> <input className="form-control" type="radio" value="Yes" name="mavailable" checked={mavailable === "Yes"} onChange={(e)=>{
+    <label >Monday: </label>
+    <label >Open</label> <input type="radio" value="Yes" name="mavailable" checked={mavailable === "Yes"} onChange={(e)=>{
         setmavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input className="form-control" type="radio" value="No" name="mavailable" checked={mavailable === "No"} onChange={(e)=>{
+    <label >Closed</label> <input type="radio" value="No" name="mavailable" checked={mavailable === "No"} onChange={(e)=>{
         setmavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         setmstime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setmetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select onChange={(e)=>{
         setmslotduration(e.target.value)
     }} >
     <option value="00:15">15 mins</option>
@@ -356,21 +362,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Tuesday: </label>
-    <label className="form-control">Open</label> <input className="form-control" type="radio" value="Yes" name="tuavailable" checked={tuavailable === "Yes"} onChange={(e)=>{
+<label>Tuesday: </label>
+    <label>Open</label> <input type="radio" value="Yes" name="tuavailable" checked={tuavailable === "Yes"} onChange={(e)=>{
         settuavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input className="form-control" type="radio" value="No" name="tuavailable" checked={tuavailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input type="radio" value="No" name="tuavailable" checked={tuavailable === "No"} onChange={(e)=>{
         settuavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         settustime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         settuetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select onChange={(e)=>{
         settuslotduration(e.target.value)
     }} >
      <option value="00:15">15 mins</option>
@@ -379,21 +385,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Wednesday: </label>
-    <label className="form-control">Open</label> <input className="form-control" type="radio" value="Yes" name="wavailable" checked={wavailable === "Yes"} onChange={(e)=>{
+<label>Wednesday: </label>
+    <label>Open</label> <input type="radio" value="Yes" name="wavailable" checked={wavailable === "Yes"} onChange={(e)=>{
         setwavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input className="form-control" type="radio" value="No" name="wavailable" checked={wavailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input type="radio" value="No" name="wavailable" checked={wavailable === "No"} onChange={(e)=>{
         setwavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         setwstime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setwetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select onChange={(e)=>{
         setwslotduration(e.target.value)
     }} >
     <option value="00:15">15 mins</option>
@@ -402,21 +408,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Thursday: </label>
-    <label>Open</label> <input type="radio" className="form-control" value="Yes" name="thavailable" checked={thavailable === "Yes"} onChange={(e)=>{
+<label>Thursday: </label>
+    <label>Open</label> <input type="radio" value="Yes" name="thavailable" checked={thavailable === "Yes"} onChange={(e)=>{
         setthavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input  className="form-control" type="radio" value="No" name="thavailable" checked={thavailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input  type="radio" value="No" name="thavailable" checked={thavailable === "No"} onChange={(e)=>{
         setthavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         setthstime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setthetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select onChange={(e)=>{
         setthslotduration(e.target.value)
     }} >
    <option value="00:15">15 mins</option>
@@ -425,21 +431,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Friday: </label>
-    <label>Open</label> <input type="radio" className="form-control" value="Yes" name="favailable" checked={favailable === "Yes"} onChange={(e)=>{
+<label>Friday: </label>
+    <label>Open</label> <input type="radio" value="Yes" name="favailable" checked={favailable === "Yes"} onChange={(e)=>{
         setfavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input className="form-control" type="radio" value="No" name="favailable" checked={favailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input type="radio" value="No" name="favailable" checked={favailable === "No"} onChange={(e)=>{
         setfavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input name="starttime" className="form-control"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         setfstime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input name="endtime" className="form-control"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setfetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control"  onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select  onChange={(e)=>{
         setfslotduration(e.target.value)
     }} >
      <option value="00:15">15 mins</option>
@@ -448,21 +454,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Saturday: </label>
-    <label>Open</label> <input className="form-control" type="radio" value="Yes" name="saavailable" checked={saavailable === "Yes"} onChange={(e)=>{
+<label>Saturday: </label>
+    <label>Open</label> <input type="radio" value="Yes" name="saavailable" checked={saavailable === "Yes"} onChange={(e)=>{
         setsaavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input className="form-control" type="radio" value="No" name="saavailable" checked={saavailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input type="radio" value="No" name="saavailable" checked={saavailable === "No"} onChange={(e)=>{
         setsaavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control" >Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label >Start Time</label><input name="starttime"  onChange={(e)=>{
         setsastime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setsaetime(e.target.value)
     }} />
-    <label className="form-control"> Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label> Select Slot Duration</label>
+    <select onChange={(e)=>{
         setsaslotduration(e.target.value)
     }} >
    <option value="00:15">15 mins</option>
@@ -471,21 +477,21 @@ const DoctorSlots=(props)=> {
     <option value="00:60">60 mins</option>
     </select><br/>
 
-<label className="form-control">Sunday: </label>
-    <label className="form-control">Open</label> <  input type="radio"  className="form-control" value="Yes" name="suavailable" checked={suavailable === "Yes"} onChange={(e)=>{
+<label>Sunday: </label>
+    <label>Open</label> <  input type="radio"  value="Yes" name="suavailable" checked={suavailable === "Yes"} onChange={(e)=>{
         setsuavailable(e.target.value)
     }} />
-    <label className="form-control">Closed</label> <input type="radio" className="form-control" value="No" name="suavailable" checked={suavailable === "No"} onChange={(e)=>{
+    <label>Closed</label> <input type="radio" value="No" name="suavailable" checked={suavailable === "No"} onChange={(e)=>{
         setsuavailable(e.target.value)
     }} /><br></br>
-    <label className="form-control">Start Time</label><input className="form-control" name="starttime"  onChange={(e)=>{
+    <label>Start Time</label><input name="starttime"  onChange={(e)=>{
         setsustime(e.target.value)
     }} />
-    <label className="form-control">End Time</label><input className="form-control" name="endtime"  onChange={(e)=>{
+    <label>End Time</label><input name="endtime"  onChange={(e)=>{
         setsuetime(e.target.value)
     }} />
-    <label className="form-control">Select Slot Duration</label>
-    <select className="form-control" onChange={(e)=>{
+    <label>Select Slot Duration</label>
+    <select onChange={(e)=>{
         setsuslotduration(e.target.value)
     }} >
     <option value="00:15">15 mins</option>
@@ -496,7 +502,7 @@ const DoctorSlots=(props)=> {
 
 
 
-    <button className="form-control" onClick={call}>Click</button>
+    <button className="form-control" onClick={call}>Register</button>
     </div>
   );
 }
