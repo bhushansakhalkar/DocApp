@@ -3,7 +3,9 @@ import {Switch,Route,Link,useNavigate} from "react-router-dom";
 import DoctorDataService from "../services/doctors";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from 'react-router-dom';
+import PatientDataService from "../services/patients";
 import Calendar from 'react-calendar'
+import Modal from 'react-bootstrap/Modal'
 import MyNavbar from './navbar';
 
 const DoctorDetails=(props)=> {
@@ -26,6 +28,11 @@ const DoctorDetails=(props)=> {
     const [daydata,setdatdata] = useState(data)
     const [disable,setDisabled] = useState(1)
     const [maindate,setMainDate] = useState('')
+    const [show,setShow] = useState(false)
+    const hide = ()=>{
+        setShow(false)
+    }
+    const [iid,setIid] = useState('')
 
     
     const getDoctorDetails = id =>{
@@ -37,17 +44,24 @@ const DoctorDetails=(props)=> {
             console.log(response.data);
 
             setDoctor(response.data)
-
+            
         })
         .catch(e=>{
             console.log(e);
         })
     }
+    const deleteProfile = ()=>{
+        PatientDataService.deleteProfile(iid)
+        .then(()=>{
+            navigate("/")
+        })
+        .catch(e=>console.log(e))
+    }
     
     function checked(e,index){
         setDisabled(0.7)
         
-        navigate('/patient/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot,maindate:maindate}});
+        navigate('/patient/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot,maindate:maindate,iid:iid}});
       
     }
 
@@ -68,7 +82,8 @@ const DoctorDetails=(props)=> {
 
     useEffect(()=>{
         getDoctorDetails(id)
-
+        let idd = localStorage.getItem('iid')
+        setIid(idd)
     },[id])
 
     function getWeekOfMonth(date) {
@@ -115,7 +130,28 @@ const DoctorDetails=(props)=> {
   return (
     <div className="App" style={{ maxWidth: '100%',overflowX:'unset'}}>
         <h1 style={{textAlign:'center'}}> Doctor detail Page</h1>
-        <MyNavbar title='DocApp'  second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  /><br/><br/>
+        <Modal backdrop={true} show={show} onHide={hide}>
+    <Modal.Header closeButton>
+    <Modal.Title>Delete Account</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+    <p> Are your sure you want to delete your profile?</p>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <button className="primary" onClick={hide} >Close</button>
+    <button className="danger" onClick={deleteProfile}>Delete</button>
+  </Modal.Footer>
+  </Modal>
+        <MyNavbar title='DocApp'  pathSecond ={"/patient/allDoctors"} pathThird={"/patient/updatePatient/"+localStorage.getItem('iid')} pathFifth={()=>{
+                setShow(true)
+            }}
+         pathFourth={()=>{
+            localStorage.removeItem("iid")
+            localStorage.removeItem("token")
+            navigate("/")
+        }} second='Home' third='Update Profile' fourth='Logout' fifth='Delete Profile'  /><br/><br/>
         <div>
         <div className="col-md-3">
         <div>

@@ -16,18 +16,19 @@ const DoctorHome = () => {
     const [date,setDate] = useState()
     const [appointments,setAppointments] = useState([])
     const [show,setShow] = useState(false)
+    const [token,setToken]=  useState('')
     const hide = ()=>{
         setShow(false)
     }
     const [iid ,setIid] = useState('')
     useEffect(()=>{
         console.log('hello')
-       
-            console.log(appointments)
+            let t = localStorage.getItem('token')
+            setToken(localStorage.getItem('token'))
             let idd = localStorage.getItem('iid')   
             setIid(localStorage.getItem('iid'))
             console.log(iid)
-        getApps('08-02-2022',idd)
+        getApps('09-02-2022',idd,token)
     },[]);
     function formatDate(date) {
         var d = new Date(date),
@@ -47,12 +48,17 @@ const DoctorHome = () => {
         console.log(formatDate(date))
         console.log(date)
         console.log(iid)
-        getApps(d,"61f89a6e34322cd54f747b86")
+        getApps(d,iid)
     };
 
     const getApps = (date,id)=>{
-        DoctorDataService.getAppointmentsByDate(date,id)
+        DoctorDataService.getAppointmentsByDate(date,id,localStorage.getItem('token'))
         .then((response)=>{
+            
+            // if(response.data.status == 'error'){
+            //     alert("Access Forbidden")
+            //     navigate('/')
+            // }
             console.log(response.data)
             app = response.data
             setAppointments(app)
@@ -83,7 +89,11 @@ const DoctorHome = () => {
   </Modal.Footer>
   </Modal>
             <h1 className="text-center"> Appointments</h1>
-            <MyNavbar title='DocApp' pathThird={'update/'+iid} pathFifth={()=>{
+            <MyNavbar title='DocApp' pathThird={'update/'+iid} pathFourth={()=>{
+            localStorage.removeItem("iid")
+            localStorage.removeItem("token")
+            navigate("/")
+        }} pathFifth={()=>{
                 setShow(true)
             }} third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
             <div className="container-fluid mx-2 " >
@@ -104,8 +114,15 @@ const DoctorHome = () => {
                     <div className="col-md-9">
                         <div className="row">
                             <div className="col-md-4 mb-4">
+                                
                                 {appointments.map((appointment)=>{
-                                    console.log(appointment)
+                               
+                                    // if(appointment.length == 0){
+                                    //     console.log(appointment)
+                                    //     return(
+                                    //         <h2>You have no Appointments today!</h2>
+                                    //     )
+                                    // }
                                     return(
                                     <Card style={{ width: '18rem' }}>
                                   

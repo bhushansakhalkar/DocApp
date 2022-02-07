@@ -22,7 +22,7 @@ const Login = ()=>{
             })
         }).then((res) => res.json())
 
-        if(result.status === 'ok'){
+        if(result.status != 'error'){
             
             console.log('got the token: ', result.acesstoken)
             localStorage.setItem('token', result.acesstoken)
@@ -41,8 +41,8 @@ const Login = ()=>{
             }
             
         } else {
-            alert(result.error)
-            navigate("/")
+            console.log(result)
+            alert(result.data)
         }
        
         
@@ -58,7 +58,7 @@ const Login = ()=>{
         <section className="row justify-content-center">
             <section className="col-12 col-sm-6 col-md-3">
                 <form id = "reg-login" className="form-container">
-                    <h3 className="fw-normal mb-3 pb-3 " style={{letterSpacing: "1px"}}>Login</h3>
+                    <h3 className="fw-normal mb-3 pb-3 " style={{fontSize:'3rem',marginTop:'5rem',textAlign:'center'}}>Login</h3>
                     <div className="mb-3">
                       <label  className="form-label">User name</label>
                       <input type="text" className="form-control" id="username" onChange={(e)=>{

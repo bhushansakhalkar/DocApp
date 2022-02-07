@@ -542,6 +542,23 @@ router.route('/add/').post((req,res)=>{
 
 })
 
+router.route('/updatePrescription/:id').put((req,res)=>{
+    const id = req.params.id
+    const prescription = req.body.prescription
+    console.log(prescription)
+    console.log(id)
+    
+    appointment.findOneAndUpdate({_id:id},{Prescription:prescription})
+    .then((response)=>{
+        res.status(200).json(response)
+        console.log("Sent")
+    })
+    .catch(e=>{
+        console.log(e)
+    })
+
+})
+
 
 // const cache = require('D:/React/doc_app/routeCache')
 
@@ -567,7 +584,7 @@ router.route('/add/').post((req,res)=>{
  *        description: Updated Successfully
  */
 //Patient Appointments
-router.get('/getappointmentByDate/:date/:did', async(req, res) => {
+router.get('/getappointmentByDate/:date/:did',authenticateToken, async(req, res) => {
     const dateString = req.params.date
     const docId = req.params.did
     console.log(docId)
@@ -740,6 +757,9 @@ router.post('/appointment', async(req, res) => {
     }
 })
 
+
+
+
 /**
  * @swagger
  * /deleteDoctor/:id:
@@ -752,6 +772,12 @@ router.post('/appointment', async(req, res) => {
  *      200:
  *        description: Patient added
  */
+
+
+
+
+
+
 //Post Patient
 router.route('/patient').post((req, res) => {
     const patientApp = new patient({

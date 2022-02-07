@@ -18,6 +18,9 @@ class PatientDataService{
     getMyAppointments(id){
         return http.get('patient/myAppointments/'+id)
     }
+    getMyAppointmentsByDate(did,date){
+        return http.get('patient/getappointmentByDate/'+date+'/'+did)
+    }
     deleteProfile(id){
         return http.delete('patient/deletePatient/'+id)
     }

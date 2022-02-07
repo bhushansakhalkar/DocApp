@@ -35,7 +35,10 @@ const App = () =>  {
         path="/patient/Alldoctors/doctordetails/:id"
         element={<DoctorDetails/>}
         />
-        
+        <Route
+        path="/patient/BookingConfirmed"
+        element = {<Final/>}
+        ></Route>
          <Route 
         path="/doctor/registration/"
         element={<DoctorRegistration/>}

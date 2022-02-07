@@ -85,7 +85,7 @@ const DoctorRegistration=(props)=> {
     <label>Username: </label><input className="form-control" name="username"  onChange={(e)=>{
         setUsername(e.target.value)
     }} /><br/>
-    <label>Password: </label><input className="form-control" name="password"  onChange={(e)=>{
+    <label>Password: </label><input className="form-control" name="password" type="password" onChange={(e)=>{
         setPassword(e.target.value)
     }} /><br/>
      <label>Email: </label><input className="form-control" name="email"  onChange={(e)=>{
@@ -135,7 +135,7 @@ const DoctorRegistration=(props)=> {
         setqualification(e.target.value)
     }} /><br/>
 
-    <button onClick={call}>Click</button>
+    <button onClick={call}>Next</button>
     </section>
     </section>
     </section>

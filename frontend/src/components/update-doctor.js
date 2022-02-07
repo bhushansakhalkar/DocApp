@@ -1,15 +1,17 @@
 import React,{useState,useEffect} from "react";
-import {Switch,Route,Link} from "react-router-dom";
+import {Switch,Route} from "react-router-dom";
 import DoctorDataService from "../services/doctors";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useParams } from 'react-router-dom';
 import Calendar from 'react-calendar'
 import MyNavbar from "./navbar";
+import Modal from 'react-bootstrap/Modal'
+import { useNavigate,Link } from 'react-router-dom';
 
 
 const UpdateDoctor=(props)=> {
 
- 
+    const navigate = useNavigate()
     const { id } = useParams()
     // const checked = ()=>{
     //     setDisabled(0.7)
@@ -24,7 +26,11 @@ const UpdateDoctor=(props)=> {
     const [slots,setSlots] = useState([])
     const [disable,setDisabled] = useState(1)
     const [token,setToken] = useState('')
+    const [show,setShow] = useState(false)
     const [did,setDid] = useState('')
+    const hide = ()=>{
+        setShow(false)
+    }
     
     const getDoctorDetails = id =>{
         console.log(id)
@@ -138,11 +144,38 @@ const UpdateDoctor=(props)=> {
         })
         
     }
+    const deleteProfile = ()=>{
+        DoctorDataService.deleteProfile(did)
+        .then(()=>{
+            navigate("/")
+        })
+        .catch(e=>console.log(e))
+    }
   return (
     <div className="App">
     <h1 style={{textAlign:'center'}}> Doctor detail Page</h1>
     <br/>
-    <MyNavbar title='DocApp'  second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  /><br></br>
+    <Modal backdrop={true} show={show} onHide={hide}>
+    <Modal.Header closeButton>
+    <Modal.Title>Delete Account</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+    <p> Are your sure you want to delete your profile?</p>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <button className="primary" onClick={hide} >Close</button>
+    <button className="danger" onClick={deleteProfile}>Delete</button>
+  </Modal.Footer>
+  </Modal>
+    <MyNavbar title='DocApp' pathThird={'doctor/home'} pathFourth={()=>{
+            localStorage.removeItem("iid")
+            localStorage.removeItem("token")
+            navigate("/")
+        }} pathFifth={()=>{
+                setShow(true)
+            }} third='My Appointments' fourth='Logout' fifth='Delete Profile'  /><br></br>
     <div  className="col-md-9" style={{width: '15rem', height: '20rem'}} >
             <h4>Update Slots</h4>
             <Calendar

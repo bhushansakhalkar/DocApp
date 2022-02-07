@@ -17,6 +17,11 @@ const MyAppointments=(props)=> {
     const { id } = useParams()
     const navigate = useNavigate();
     let data={}
+    const [iid ,setIid] = useState('')
+    const [show,setShow] = useState(false)
+    const hide = ()=>{
+        setShow(false)
+    }
    const doc = {
         Address: "",
         Contact: "",
@@ -57,7 +62,7 @@ const MyAppointments=(props)=> {
 
 
     useEffect(()=>{
-        
+        setIid(localStorage.getItem('iid'))
         getDoctorDetails(id)
 
     },[id])
@@ -78,7 +83,15 @@ const MyAppointments=(props)=> {
 
     const onChange = date => {
         let d = formatDate(date)
-        console.log(formatDate(date))
+        PatientDataService.getMyAppointmentsByDate(d,iid)
+        .then((response)=>{
+            console.log(response)
+           let app = response.data
+            setAppointment(app)
+            console.log(app)
+        })
+        .catch(e=>alert("Nothing found"))
+        // console.log(formatDate(date))
         // setDate(d)
     };
 
@@ -119,15 +132,31 @@ const MyAppointments=(props)=> {
             
     //     }
     //     }
-       
+    const deleteProfile = ()=>{
+        PatientDataService.deleteProfile(iid)
+        .then(()=>{
+            navigate("/")
+        })
+        .catch(e=>console.log(e))
+    }
   return (
     <div className="App">
     <h1 style={{textAlign:'center'}}> My Appointments</h1>
     <br/><br/>
-    <MyNavbar title='DocApp'  pathSecond ="/patient/allDoctors"  pathThird='#' second='Doctor List' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
+    <MyNavbar title='DocApp'  pathSecond ={"/patient/allDoctors"} pathThird={"/patient/updatePatient/"+iid} pathFifth={()=>{
+                setShow(true)
+            }}
+         pathFourth={()=>{
+            localStorage.removeItem("iid")
+            localStorage.removeItem("token")
+            navigate("/")
+        }} second='Home' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
     <div className="container-fluid mx-2 " >
                 <div className="row mt-5 mx-2">
                     <div className="col-md-3">
+                    <button className="primary" style={{marginLeft:'5rem',marginBottom:'1rem'}} onClick={()=>{
+                        getDoctorDetails(id)
+                    }} >All</button>
                     <Cal onChange={onChange} value={date} />
                     </div>
                     <div className="col-md-9">

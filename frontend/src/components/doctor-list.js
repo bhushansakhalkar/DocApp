@@ -7,6 +7,7 @@ import PatientDataService from "../services/patients";
 import axios from 'axios';
 import DoctorDetails from './doctor-details';
 import Pagination from 'react-bootstrap/Pagination'
+import { Col, Row } from "react-bootstrap";
 import MyNavbar from './navbar';
 
 import Modal from 'react-bootstrap/Modal'
@@ -21,6 +22,7 @@ const DoctorList = () => {
     const [iid ,setIid] = useState('')
     const [query,setQuery] = useState('')
     const [show,setShow] = useState(false)
+    const [limit,setLimit] = useState(2)
     const hide = ()=>{
         setShow(false)
     }
@@ -34,12 +36,16 @@ const DoctorList = () => {
         console.log(localStorage.getItem("token"))
         setIid(localStorage.getItem('iid'))
        
-        getDoc(query);
+        getDoc(query,limit);
         
         
     },[]);
+    const handleSelect=(event)=>{
+        setLimit(event.target.value)
+        getDoc(query,event.target.value)
+    }
 
-    const getDoc = (q) =>{
+    const getDoc = (q,l) =>{
         // let query={
         //     "page":1,
         //     "limit":2,
@@ -47,12 +53,16 @@ const DoctorList = () => {
        let t = localStorage.getItem('token')
         setToken(localStorage.getItem('token'))
         let page = 1
-        let limit = 2
+         l = limit
         console.log(q)
         
-        DoctorDataService.getAll(page,limit,q,t)
+        DoctorDataService.getAll(page,l,q,t)
         .then((response)=>{
             console.log(response.data);
+            if(response.data.status == 'error'){
+                alert("Access Forbidden")
+                navigate('/')
+            }
             setDoctors(response.data.result);
             setNext(response.data.next)
             setPrev(response.data.prev)
@@ -93,10 +103,17 @@ const DoctorList = () => {
   </Modal.Footer>
   </Modal>
         <h1 style={{textAlign:'center'}}>Doctor List</h1><br/>
-        <MyNavbar title='DocApp'  pathSecond ={path2} pathThird={"/patient/updatePatient/"+iid}  second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
-        <div className="container-fluid mx-2 " >
-                <div className="row mt-5 mx-2">
-        <div className="col-md-3">
+        <MyNavbar title='DocApp'  pathSecond ={path2} pathThird={"/patient/updatePatient/"+iid} pathFifth={()=>{
+                setShow(true)
+            }}
+         pathFourth={()=>{
+            localStorage.removeItem("iid")
+            localStorage.removeItem("token")
+            navigate("/")
+        }} second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
+        <div className="container-fluid mx-2 "  >
+                <div className="row mt-5 mx-2" style={{marginBottom:'0rem'}}>
+        <div className="col-md-3" style={{marginBottom:'0rem'}}>
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">All</button>
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">General Physician</button>
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Cardiologist</button>
@@ -112,13 +129,14 @@ const DoctorList = () => {
 
                     <div className="col-md-9">
                         <div className="row">
-                            <div className="col-md-4">
-        <div style={{display:'flex',flexDirection:'row' }}>
+                            <div className="col-md-12 lg-12">
+        <div className="col-md-12 mb-12" style={{display:'flex',flexDirection:'row',marginLeft:'2rem' }}>
+        <Row  xs={1} md={2} lg={2} className="g-10">
         {doctors.map((doctor)=>{
             console.log(doctor)
             return(
-                <div >
-                <Card className='Card' style={{ width: '23rem',marginBottom:'1rem',marginRight:'2rem'}}>
+                 <Col>
+                <Card className='Card' style={{ width: '25rem',marginBottom:'1rem',marginRight:'2rem'}}>
         <Card.Body style={{flex:1}}>
             <Card.Title>{doctor.Fname +"  "+ doctor.Lname}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{doctor.Address}</Card.Subtitle>
@@ -129,14 +147,24 @@ const DoctorList = () => {
             <Card.Link><Link to={"doctordetails/"+doctor._id}> More Info</Link></Card.Link>
         </Card.Body>
         </Card>
-
-        
-        </div>
+        </Col>
         
             )
         })}
-        
+        </Row>
         </div>
+        <div style={{float:'right',marginTop:'1rem'}}>
+        <label>Select the limit</label>
+        <select style={{marginLeft:'1rem',width:'3rem'}}  onClick={()=>{
+            getDoc(query,limit)
+        }} onChange={(event) => {handleSelect(event)}}
+        value={limit} >
+            <option value={1}> 1 </option>
+            <option value={2}> 2 </option>
+            <option value={4}> 4 </option>
+            <option value={6}> 6 </option>
+        </select>
+        </div>        
         <Pagination>
         <Pagination.Prev onClick={()=>{
      
@@ -176,15 +204,18 @@ const DoctorList = () => {
   }}/>
     
         </Pagination>
+        
 </div>
 
 </div>
         
         </div>
                         
-      
+        
     </div>
+    
     </div>
+    
             </div>
   );
 }

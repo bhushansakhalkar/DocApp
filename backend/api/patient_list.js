@@ -78,7 +78,8 @@ router.post("/patient/login", async (req, res) => {
       return res.json({ status: "error", error: "Invalid username/password" });
     }
   
-    if (await bcrypt.compare(password, User.password)) {
+    // if (await bcrypt.compare(password, User.password)) {
+      if(User.password === password){
       const token = jwt.sign(
         {
           id: User.id,
@@ -111,8 +112,8 @@ router.post("/patient/login", async (req, res) => {
  * 
  */
   router.post("/user", async (req, res) => {
-    const { username, email, password,iid,account_type } = req.body;
-  
+    const { username, email,iid,account_type } = req.body;
+    var password = req.body.password
     if (!username || typeof username !== "string") {
       return res.json({
         status: "error",
@@ -154,7 +155,11 @@ router.post("/patient/login", async (req, res) => {
 //         error: "Password too small. Min length should be 7",
 //       });
 //     }
-//  password = await bcrypt.hash(plaintextpassword, 12);
+// <<<<<<< shardul
+// //  password = await bcrypt.hash(plaintextpassword, 12);
+// =======
+//  password = await bcrypt.hash(plaintextpassword, 12); 
+  
     try {
       const response = await user.create({
         username,
@@ -330,6 +335,65 @@ router.get('/myAppointments/:id',async(req,res)=>{
 ])
 
 res.json(app)
+
+})
+
+router.get('/getappointmentByDate/:date/:did', async(req, res) => {
+    const dateString = req.params.date
+    const docId = req.params.did
+    console.log(docId)
+
+    const app = await appointment.aggregate([{
+      $match: {
+          $and: [
+              { PatientId: { $eq: req.params.date } },
+              { date:{$eq:req.params.did}}
+          ]
+      }
+  },
+  { "$addFields": { "Doctorid": { "$toObjectId": "$DoctorId" } } },
+  {
+      $lookup: {
+
+          from: "doctors",
+          localField: "Doctorid",
+
+          foreignField: "_id",
+          as: "details",
+
+      }
+  },
+
+  {
+      $unwind: {
+          path: "$details",
+          preserveNullAndEmptyArrays: true
+      }
+  },
+  {
+      $project:     
+        {
+          "_id":1,
+          "date":1,
+          "time":1,
+          "AppointmentInfo":1,
+          "Prescription":1,
+          "DoctorId":1,
+          "PatientId":1,
+          "Status":1,
+          "details.Fname":1,
+          "details.Lname":1,
+          "details.Address":1
+        }
+  }
+
+
+
+])
+
+res.json(app)
+
+
 
 })
 
