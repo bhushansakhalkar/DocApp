@@ -77,7 +77,7 @@ const DoctorRegistration=(props)=> {
    }
   return (
     <div className="App">
-    <h1 style={{textAlign:'center'}}> Registration Page</h1>
+    <h1 style={{textAlign:'center'}}> Doctor Registration</h1>
     <br/><br/><br/><br/>
     <section className="container-fluid backgd">
         <section className="row justify-content-center">

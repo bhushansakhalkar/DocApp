@@ -45,6 +45,13 @@ const Login = ()=>{
             navigate("/")
         }
        
+        
+    }
+    const registerPatient = ()=>{
+
+    }
+    const registerDoctor =()=>{
+
     }
     return(
         <section className="container-fluid backgd">
@@ -66,6 +73,11 @@ const Login = ()=>{
                     </div>
                     <div className="col text-center">
                     <button type="submit" className="btn btn-block btn-lg btn-primary" onClick={login}>Submit</button>
+                    </div><br></br>
+                    <div className="col text-center">
+                    <h6>New to Here? Please use the below links to register</h6>
+                    <h6><a type="submit" className="" href='/patient/registration'>Register as Patient</a></h6><br></br>
+                    <h6><a type="submit" className="" href='/doctor/registration'>Register as Doctor</a></h6>
                     </div>
                   </form>
             </section>

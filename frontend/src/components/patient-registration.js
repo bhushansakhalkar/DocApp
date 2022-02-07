@@ -82,7 +82,7 @@ const PatientRegistration = ()=>{
         <section className="container-fluid backgd">
         <section className="row justify-content-center">
             <section className="col-12 col-sm-6 col-md-3">
-                    <h3 className="fw-normal mb-3 pb-3 " style={{letterSpacing: "1px"}}>Login</h3>
+                    <h3 className="fw-normal mb-3 pb-3 " style={{letterSpacing: "1px"}}>Patient Registration</h3>
                     <div className="mb-3">
                     <label>Username: </label><input name="username" className="form-control"  onChange={(e)=>{
                         setUsername(e.target.value)
