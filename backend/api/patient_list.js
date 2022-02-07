@@ -9,7 +9,19 @@ const bcrypt = require('bcryptjs')
 const user = require('../models/Usermodel')
 const JWT_SECRET = "c7b6279efb87ef30afcc4e403e2ab580eb02f2f15e51ee0259b5114c9b6c35d0f93222085d0f32df0c6c498867b02c137ecd4921f2434b87a9d3c7f36077e0d1";
 
-
+/**
+ * @swagger
+ * /patient:
+ *  post: 
+ *    description: Creating patient profile API
+ *    tags: [Patient]
+ *    responses:
+ *      200:
+ *        description: Patient added successfully
+ *      400:
+ *        description: Invalid username/password
+ * 
+ */
 router.route('/patient').post((req, res) => {
     const patientApp = new patient({
         id: req.body.id,
@@ -44,6 +56,20 @@ router.route('/patient').post((req, res) => {
 
 })
 
+/**
+ * @swagger
+ * /patient/login:
+ *  post: 
+ *    description: Patient login API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Invalid username/password
+ *      200:
+ *        description: Login successfull
+ * 
+ * 
+ */
 router.post("/patient/login", async (req, res) => {
     const { username, password } = req.body;
     const User = await user.findOne({ username }).lean();
@@ -67,6 +93,23 @@ router.post("/patient/login", async (req, res) => {
     res.json({ status: "error", data: "Invalid username/password" });
   });
 
+  
+ /**
+ * @swagger
+ * /user:
+ *  post: 
+ *    description: User authentication profile creation API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Invalid username/password
+ *      11000:
+ *        description: Username already in use
+ *      200:
+ *        description: User created successfully
+ * 
+ * 
+ */
   router.post("/user", async (req, res) => {
     const { username, email, iid,account_type } = req.body;
 
@@ -134,6 +177,20 @@ router.post("/patient/login", async (req, res) => {
     res.json({ status: "ok" });
   });
 
+ /**
+ * @swagger
+ * /:
+ *  get: 
+ *    description: Fetching doctors list for patient API
+ *    tags: [Doctor]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Doctor inforation fetched
+ * 
+ * 
+ */
   router.route('/').get(authenticateToken,(req,res)=>{
     console.log(req.query)
     const page = parseInt(req.query.page)
@@ -189,7 +246,20 @@ function paginatedResults(model){
     }
 }
 
-
+  /**
+ * @swagger
+ * /deletePatient/:id:
+ *  delete: 
+ *    description: Patient deletion API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Patient deleted
+ * 
+ * 
+ */
 router.delete('/deletePatient/:id', async(req, res) => {
     const tempId = req.params.id
     console.log(tempId)
@@ -204,7 +274,15 @@ router.delete('/deletePatient/:id', async(req, res) => {
 
 });
 
-
+  /**
+ * @swagger
+ * /myAppointments/:id:
+ *  get: 
+ *    description: Fetching Patient appointment API
+ *    tags: [Patient]
+ * 
+ * 
+ */
 router.get('/myAppointments/:id',async(req,res)=>{
     const app = await appointment.aggregate([{
         $match: {

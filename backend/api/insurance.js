@@ -1,6 +1,21 @@
 const router = require('express').Router();
 let Insurance = require('../models/insurance');
 let storage;
+
+/**
+ * @swagger
+ * /add:
+ *  post: 
+ *    description: Saving patient insurance details API
+ *    tags: [Patient]
+ *    responses:
+ *      400:
+ *        description: Error
+ *      200:
+ *        description: Insurance Added
+ * 
+ * 
+  */
 router.route('/add').post((req,res)=>{
     const insuranceProvider = req.body.insuranceProvider;
     const firstName = req.body.firstName;
