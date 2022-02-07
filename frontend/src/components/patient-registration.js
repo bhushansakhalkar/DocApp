@@ -27,7 +27,7 @@ const PatientRegistration = ()=>{
     useEffect(()=>{
         console.log(localStorage.getItem('iid'))
     })
-
+    const navigate = useNavigate()
     const register = ()=>{
     patient = { 
      Fname : fname,
@@ -68,6 +68,7 @@ const PatientRegistration = ()=>{
                 .then((response)=>{
                     console.log(response)
                     console.log("user created")
+                    navigate("/")
                 })
                 .catch(e=>console.log(e))
                 

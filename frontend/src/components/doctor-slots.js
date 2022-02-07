@@ -317,6 +317,12 @@ const DoctorSlots=(props)=> {
             console.log(response.data)
             user.iid = response.data._id
             PatientDataService.registerUser(user)
+            .then(()=>{
+                console.log("Doctor/User Added")
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
         })
         .catch((e)=>{
             console.log(e)

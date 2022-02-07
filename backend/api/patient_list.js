@@ -98,20 +98,20 @@ router.post("/patient/login", async (req, res) => {
       });
     }
   
-    if (!plaintextpassword || typeof plaintextpassword !== "string") {
-      return res.json({
-        status: "error",
-        error: "Invalid password",
-      });
-    }
+//     if (!plaintextpassword || typeof plaintextpassword !== "string") {
+//       return res.json({
+//         status: "error",
+//         error: "Invalid password",
+//       });
+//     }
   
-    if (plaintextpassword.length < 7) {
-      return res.json({
-        status: "error",
-        error: "Password too small. Min length should be 7",
-      });
-    }
- password = await bcrypt.hash(plaintextpassword, 12);
+//     if (plaintextpassword.length < 7) {
+//       return res.json({
+//         status: "error",
+//         error: "Password too small. Min length should be 7",
+//       });
+//     }
+//  password = await bcrypt.hash(plaintextpassword, 12);
   
     try {
       const response = await user.create({
