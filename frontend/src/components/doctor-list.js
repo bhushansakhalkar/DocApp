@@ -2,14 +2,17 @@ import Card from 'react-bootstrap/Card'
 import React,{useState,useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DoctorDataService from "../services/doctors";
-import {Link, Routes,Route,BrowserRouter as Router} from "react-router-dom";
+import {Link, Routes,Route,useNavigate,BrowserRouter as Router} from "react-router-dom";
 import PatientDataService from "../services/patients";
 import axios from 'axios';
 import DoctorDetails from './doctor-details';
 import Pagination from 'react-bootstrap/Pagination'
 import MyNavbar from './navbar';
+
+import Modal from 'react-bootstrap/Modal'
 const DoctorList = () => {
    
+    const navigate = useNavigate()
     const [doctors,setDoctors] = useState([]);
     const [nextpage,setNext] = useState({})
     const [prevpage,setPrev] = useState({})
