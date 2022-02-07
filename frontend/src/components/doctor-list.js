@@ -103,6 +103,8 @@ const DoctorList = () => {
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Dentist</button>
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Nephrologist</button>
                         <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Neurologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Orthopedic</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Gynacologist</button>
                     </div>
 
                     <div className="col-md-9">
