@@ -24,6 +24,10 @@ const PatientRegistration = ()=>{
     const [insuranceIdentificationNumber,setInsuranceIdentificationNumber] = useState('')
     const [email,setEmail] = useState('')
 
+    useEffect(()=>{
+        console.log(localStorage.getItem('iid'))
+    })
+
     const register = ()=>{
     patient = { 
      Fname : fname,
@@ -52,7 +56,7 @@ const PatientRegistration = ()=>{
         iid:'',
         account_type:'Patient'
     }
-
+   
 
         
     

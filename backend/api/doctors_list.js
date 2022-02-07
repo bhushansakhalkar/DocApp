@@ -43,7 +43,7 @@ router.post('/api/login', async(req, res) => {
 
 
 
-        return res.json({ status: "ok", acesstoken: token,type:User.account_type });
+        return res.json({ status: "ok", acesstoken: token,type:User.account_type,iid:User.iid });
 
     }
 
@@ -59,7 +59,8 @@ router.route('/').get(authenticateToken,(req,res)=>{
     console.log(req.query)
     const page = parseInt(req.query.page)
     const limit = parseInt(req.query.limit)
-
+    const q = req.query.q
+    if(q == 'All' || q == ''){
     const startIndex = (page-1) * limit
     const endIndex = page * limit
     Doctor.find()
@@ -81,7 +82,42 @@ router.route('/').get(authenticateToken,(req,res)=>{
         res.json(result) 
     } )
     .catch(err=> res.status(400).json('Error: ' + err) )
+    }
+    else{
+    const startIndex = (page-1) * limit
+    const endIndex = page * limit
+    Doctor.find({Specialization:q})
+    .then((doc)=>{
+      let result = {}
+      if(endIndex < doc.length)
+      result.next = {
+          page:page +1,
+          limit:limit
+      }  
+      if(startIndex > 0){
+        result.prev = {
+            page:page - 1,
+            limit:limit
+        }
+      }
+     
+      result.result =  doc.slice(startIndex,endIndex)
+        res.json(result) 
+    } )
+    .catch(err=> res.status(400).json('Error: ' + err) )
+    }
+
+    
 });
+router.route('/getPatientByid/:id').get(authenticateToken, (req, res) => {
+
+    patient.findById(req.params.id)
+
+        .then(pat => res.json(pat))
+
+
+
+})
 
 function paginatedResults(model){
     return(req,res,next)=>{
@@ -504,6 +540,20 @@ router.delete('/deletePatient/:id', async(req, res) => {
     patient.deleteOne({ _id: new mongoose.Types.ObjectId(tempId) })
         .then(() => {
             res.json("Patient deleted")
+            console.log(res)
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+
+});
+
+router.delete('/deleteDoctor/:id', async(req, res) => {
+    const tempId = req.params.id
+    console.log(tempId)
+    Doctor.deleteOne({ _id: new Mongoose.Types.ObjectId(tempId) })
+        .then(() => {
+            res.json("Doctor deleted")
             console.log(res)
         })
         .catch((e) => {

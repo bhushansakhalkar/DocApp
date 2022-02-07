@@ -3,16 +3,24 @@ import React,{useState,useEffect} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DoctorDataService from "../services/doctors";
 import {Link, Routes,Route,BrowserRouter as Router} from "react-router-dom";
+import PatientDataService from "../services/patients";
 import axios from 'axios';
 import DoctorDetails from './doctor-details';
 import Pagination from 'react-bootstrap/Pagination'
 import MyNavbar from './navbar';
 const DoctorList = () => {
+   
     const [doctors,setDoctors] = useState([]);
     const [nextpage,setNext] = useState({})
     const [prevpage,setPrev] = useState({})
     const [currentpage,setCurrent] = useState(1)
     const [token,setToken] = useState('')
+    const [iid ,setIid] = useState('')
+    const [query,setQuery] = useState('')
+    const [show,setShow] = useState(false)
+    const hide = ()=>{
+        setShow(false)
+    }
     const handlePageClick = () => {
         alert("hello")
        
@@ -21,11 +29,14 @@ const DoctorList = () => {
     useEffect(()=>{
         console.log('hello')
         console.log(localStorage.getItem("token"))
-        getDoc();
+        setIid(localStorage.getItem('iid'))
+       
+        getDoc(query);
+        
         
     },[]);
 
-    const getDoc = () =>{
+    const getDoc = (q) =>{
         // let query={
         //     "page":1,
         //     "limit":2,
@@ -34,8 +45,9 @@ const DoctorList = () => {
         setToken(localStorage.getItem('token'))
         let page = 1
         let limit = 2
+        console.log(q)
         
-        DoctorDataService.getAll(page,limit,t)
+        DoctorDataService.getAll(page,limit,q,t)
         .then((response)=>{
             console.log(response.data);
             setDoctors(response.data.result);
@@ -46,22 +58,51 @@ const DoctorList = () => {
             console.log(e);
         })
     }
+    let path2 = "/patient/myappointments/"+iid
 
+    const sendQuery=(e)=>{
+        let q = e.target.innerHTML
+        setQuery(e.target.innerHTML)
+        getDoc(q)
+    }
+
+    const deleteProfile = ()=>{
+        PatientDataService.deleteProfile(iid)
+        .then(()=>{
+            navigate("/")
+        })
+        .catch(e=>console.log(e))
+    }
     return (
     <div className="App">
+            <Modal backdrop={true} show={show} onHide={hide}>
+    <Modal.Header closeButton>
+    <Modal.Title>Delete Account</Modal.Title>
+    </Modal.Header>
+
+    <Modal.Body>
+    <p> Are your sure you want to delete your profile?</p>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <button className="primary" onClick={hide} >Close</button>
+    <button className="danger" onClick={deleteProfile}>Delete</button>
+  </Modal.Footer>
+  </Modal>
         <h1 style={{textAlign:'center'}}>Doctor List</h1><br/>
-        <MyNavbar title='DocApp'  second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
+        <MyNavbar title='DocApp'  pathSecond ={path2} pathThird={"/patient/updatePatient/"+iid}  second='View Appointment' third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
         <div className="container-fluid mx-2 " >
                 <div className="row mt-5 mx-2">
         <div className="col-md-3">
-                        <button className="btn btn-warning w-100 mb-4">General Physician</button>
-                        <button className="btn btn-warning w-100 mb-4">Cardiologist</button>
-                        <button className="btn btn-warning w-100 mb-4">Dermatologist</button>
-                        <button className="btn btn-warning w-100 mb-4">Endocrinologist</button>
-                        <button className="btn btn-warning w-100 mb-4">Gastroenterologist</button>
-                        <button className="btn btn-warning w-100 mb-4">Dentist</button>
-                        <button className="btn btn-warning w-100 mb-4">Nephrologist</button>
-                        <button className="btn btn-warning w-100 mb-4">Neurologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">All</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">General Physician</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Cardiologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Dermatologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Endocrinologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Gastroenterologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Dentist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Nephrologist</button>
+                        <button onClick={(e)=>{sendQuery(e)}} className="btn btn-warning w-100 mb-4">Neurologist</button>
                     </div>
 
                     <div className="col-md-9">
@@ -96,7 +137,7 @@ const DoctorList = () => {
      
      let page = prevpage.page
      let limit = prevpage.limit
-     DoctorDataService.getAll(page,limit,token)
+     DoctorDataService.getAll(page,limit,query,token)
      .then((response)=>{
          console.log(response.data);
          setDoctors(response.data.result);
@@ -115,7 +156,7 @@ const DoctorList = () => {
      
         let page = nextpage.page
         let limit = nextpage.limit
-        DoctorDataService.getAll(page,limit,token)
+        DoctorDataService.getAll(page,limit,query,token)
         .then((response)=>{
             console.log(response.data);
             setDoctors(response.data.result);

@@ -47,7 +47,7 @@ const DoctorDetails=(props)=> {
     function checked(e,index){
         setDisabled(0.7)
         
-        navigate('/doctor/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot,maindate:maindate}});
+        navigate('/patient/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot,maindate:maindate}});
       
     }
 

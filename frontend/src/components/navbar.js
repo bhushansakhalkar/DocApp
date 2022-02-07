@@ -15,10 +15,10 @@ const MyNavbar = (props)=>{
       
     </Nav>
     <Nav style={{marginRight:'-5rem'}}>
-    <Nav.Link style={{color:"white"}} href="#deets">{props.second}</Nav.Link>
-      <Nav.Link style={{color:"white"}} href="#deets">{props.third}</Nav.Link>
-      <Nav.Link  style={{color:"white"}} href="#deets">{props.fourth}</Nav.Link>
-      <Nav.Link  style={{color:"white"}}  href="#memes">
+    <Nav.Link style={{color:"white"}} href={props.pathSecond}>{props.second}</Nav.Link>
+      <Nav.Link style={{color:"white"}} href={props.pathThird}>{props.third}</Nav.Link>
+      <Nav.Link  style={{color:"white"}} href={props.pathFourth}>{props.fourth}</Nav.Link>
+      <Nav.Link  style={{color:"white"}}  onClick={props.pathFifth}>
         {props.fifth}
       </Nav.Link>
     </Nav>

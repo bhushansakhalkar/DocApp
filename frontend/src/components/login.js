@@ -28,16 +28,21 @@ const Login = ()=>{
             localStorage.setItem('token', result.acesstoken)
             console.log(result)
             console.log(result.type)
+            
+            console.log(result.iid)
             if(result.type == 'Patient'){
+                localStorage.setItem('iid',result.iid)
                 //patient home page send id to home page
-                navigate('/patient/registration')
+                navigate('/patient/allDoctors')
             }else{
+                localStorage.setItem('iid',result.iid)
                 //doctor home page send id to home page
-                navigate("/doctor")
+                navigate("/doctor/home")
             }
             
         } else {
             alert(result.error)
+            navigate("/")
         }
        
     }

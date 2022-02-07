@@ -10,7 +10,7 @@ import Calendar from 'react-calendar';
 const ReactCalendar =({onChange,date}) => {
   return(
     <div style={{width: '15rem', height: '15rem'}}>
-      <Calendar onChange={onChange} value={date}/>
+      <Calendar  calendarType="ISO 8601" onChange={onChange} value={date}/>
     </div>
   );
 };

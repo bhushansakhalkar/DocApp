@@ -24,12 +24,14 @@ const UpdateDoctor=(props)=> {
     const [slots,setSlots] = useState([])
     const [disable,setDisabled] = useState(1)
     const [token,setToken] = useState('')
-
+    const [did,setDid] = useState('')
     
     const getDoctorDetails = id =>{
         console.log(id)
         let t= localStorage.getItem('token')
+        console.log(t)
         setToken(t)
+        setDid(id)
         DoctorDataService.getDetails(id,t)
         .then(response=>{
             console.log(response.data);
@@ -53,6 +55,60 @@ const UpdateDoctor=(props)=> {
         let prefixes = ['0', '1', '2', '3', '4', '5'];
         return (parseInt(prefixes[0 | adjustedDate / 7])+1);
     }
+
+    const UpdateData = ()=>{
+        DoctorDataService.updateData(did,doctor)
+        .then((res)=>{
+            console.log(res)
+            alert("Updated")
+        })
+        .catch(e=>console.log(e))
+    }
+    const updateslotandavailability = (slot,index)=>{
+        // const id = req.body.id
+        // let d = req.body.day
+        // const available = req.body.available
+        // let w = req.body.week
+        // let slottime = req.body.slottime
+        // let s = req.body.slot
+        let data = {
+            id:slot._id,
+            day:date.getDay(),
+            week:getWeekOfMonth(date),
+            slottime :slot.timeslot,
+            available :slot.available,
+            slot:index
+
+        }
+        // console.log(data)
+        DoctorDataService.updateSlotAndAvailability(data)
+        .then((res)=>{
+            console.log(res)
+            alert("Updated")
+
+        })
+        .catch(e=>console.log(e))
+    }
+    const handleChange=(e,id)=>{
+        const { value } = e.target; 
+        // console.log(value)
+    setSlots((timeslot) =>
+      timeslot.map((list, index) =>
+        index === id ? { ...list, timeslot: value } : list
+      )
+    );
+    }
+
+    const handleChangeA=(e,id)=>{
+        const { value } = e.target; 
+        // console.log(value)
+    setSlots((available) =>
+      available.map((list, index) =>
+        index === id ? { ...list, available: value } : list
+      )
+    );
+    }
+
     const confirm=()=>{
        let cd = new Date()
         console.log(cd.getMonth())
@@ -73,7 +129,9 @@ const UpdateDoctor=(props)=> {
         DoctorDataService.getAppointments(data)
         .then((response)=>{
             console.log(response)
+            
             setSlots(response.data)
+            
         })
         .catch(e=>{
             console.log(e)
@@ -99,15 +157,16 @@ const UpdateDoctor=(props)=> {
             </div>
             <div>
                
-                { slots.map(slot => {
+                { slots.map((slot,index) => {
                      <h1>Slots</h1>
-                    console.log(slot)
                     return (
                         <div key={slot._id}>
-                        <input name="slot" value={slot.timeslot} onChange={(e)=>{
-                            
-                        }}   /> <input name="available" value={slot.available} />  <button onClick={()=>{
-                            console.log(slot.timeslot)
+                        <input name="timeslot" value={slot.timeslot}  onChange={(e)=>{handleChange(e,index)}}   /> 
+                        <input name="available" value={slot.available} onChange={(e)=>{handleChangeA(e,index)}} />  
+                        <button onClick={()=>{
+                            updateslotandavailability(slot,index)
+                            // console.log(slot.timeslot)
+                            // console.log(slot.available)
                         }}>Update</button>
                         </div>
                                             )
@@ -142,10 +201,7 @@ const UpdateDoctor=(props)=> {
     <h4>Postcode: <input name="Postcode" value={doctor.Postcode}  onChange={(e)=>{
         setDoctor({...doctor,[e.target.name]:e.target.value})
     }}/></h4>
-     <button onClick={()=>{
-        console.log(doctor)
-        
-    }}>Update</button> 
+     <button onClick={UpdateData}>Update</button> 
     </div>
    
     </div>

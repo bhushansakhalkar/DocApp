@@ -3,19 +3,31 @@ import Card from "react-bootstrap/Card";
 import DoctorDataService from "../services/doctors"
 import { Button } from "react-bootstrap";
 import Calendar from 'react-calendar';
-import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal'
+import { useNavigate,Link } from 'react-router-dom';
 import Cal from './Cal';
+import MyNavbar from './navbar';
+import DeleteDoctor from './doctor-delete';
+
 
 const DoctorHome = () => {
     let app = []
     const navigate = useNavigate()
-    const [date,setDate] = useState(new Date())
+    const [date,setDate] = useState()
     const [appointments,setAppointments] = useState([])
+    const [show,setShow] = useState(false)
+    const hide = ()=>{
+        setShow(false)
+    }
+    const [iid ,setIid] = useState('')
     useEffect(()=>{
         console.log('hello')
        
             console.log(appointments)
-        getApps("08-02-2022","61f89a6e34322cd54f747b86")
+            let idd = localStorage.getItem('iid')   
+            setIid(localStorage.getItem('iid'))
+            console.log(iid)
+        getApps('08-02-2022',idd)
     },[]);
     function formatDate(date) {
         var d = new Date(date),
@@ -28,13 +40,14 @@ const DoctorHome = () => {
         if (day.length < 2) 
             day = '0' + day;
     
-        return [day, month, year].join('-');
+        return String([day, month, year].join('-'));
     }
-
-    const onChange = date => {
+    const onChange = () => {
         let d = formatDate(date)
         console.log(formatDate(date))
-        setDate(d)
+        console.log(date)
+        console.log(iid)
+        getApps(d,"61f89a6e34322cd54f747b86")
     };
 
     const getApps = (date,id)=>{
@@ -44,15 +57,48 @@ const DoctorHome = () => {
             app = response.data
             setAppointments(app)
         })
+        .catch(e=>alert("Nothing found"))
+    }
+    const deleteProfile = ()=>{
+        DoctorDataService.deleteProfile(iid)
+        .then(()=>{
+            navigate("/")
+        })
+        .catch(e=>console.log(e))
     }
     return (
         <>
-            <h1 className="text-center text-info"> Appointments</h1>
+            <Modal backdrop={true} show={show} onHide={hide}>
+    <Modal.Header closeButton>
+    <Modal.Title>Delete Account</Modal.Title>
+    </Modal.Header>
 
+    <Modal.Body>
+    <p> Are your sure you want to delete your profile?</p>
+  </Modal.Body>
+
+  <Modal.Footer>
+    <button className="primary" onClick={hide} >Close</button>
+    <button className="danger" onClick={deleteProfile}>Delete</button>
+  </Modal.Footer>
+  </Modal>
+            <h1 className="text-center"> Appointments</h1>
+            <MyNavbar title='DocApp' pathThird={'update/'+iid} pathFifth={()=>{
+                setShow(true)
+            }} third='Update Profile' fourth='Logout' fifth='Delete Profile'  />
             <div className="container-fluid mx-2 " >
                 <div className="row mt-5 mx-2">
                     <div className="col-md-3">
-                    <Cal onChange={onChange} value={date} />
+                    <Calendar
+        calendarType="ISO 8601"
+        defaultView="month"
+        showNavigation={true}
+        showFixedNumberOfWeeks={true}
+        onChange={setDate}
+        value={date}
+        
+      />
+      <button onClick={onChange}>Confirm</button>
                     </div>
 
                     <div className="col-md-9">

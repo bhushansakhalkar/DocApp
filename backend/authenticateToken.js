@@ -19,7 +19,8 @@ const authenticateToken = (req, res, next) => {
             }
         } catch (error) {
             console.log({ status: "error", error: "Incorrect Token" })
-            res.json('Sorry you are not allowed to Enter this particular Web Page')
+            alert('Sorry you are not allowed to Enter this particular Web Page')
+            return res.redirect('http://localhost:3000/');
         }
        
 

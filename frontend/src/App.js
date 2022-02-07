@@ -15,23 +15,27 @@ import DoctorHome from './components/doctor-home';
 import PatientInfo from './components/patient-info';
 import Login from './components/login';
 import PatientRegistration from './components/patient-registration';
+import Map from './components/Map';
+import Final from './components/Final';
+import MyAppointments from './components/patient-viewAppointments';
+import UpdatePatient from './components/update-patient';
+import DeleteDoctor from './components/doctor-delete';
 const App = () =>  {
   return (
     <Router>
     <div className="app">
       <Routes>
+      <Route path={'/patient/myappointments/:id'} element={<MyAppointments/>}>
+        </Route>
       <Route path={'/'} element={<Login/>}>
         </Route>
-        <Route path={'/doctor/'} element={<DoctorList/>}>
+        <Route path={'/patient/Alldoctors/'} element={<DoctorList/>}>
         </Route>
         <Route 
-        path="/doctor/doctordetails/:id"
+        path="/patient/Alldoctors/doctordetails/:id"
         element={<DoctorDetails/>}
         />
-        <Route 
-        path="/insurance/somedata/"
-        element={<Test/>}
-        />
+        
          <Route 
         path="/doctor/registration/"
         element={<DoctorRegistration/>}
@@ -44,12 +48,23 @@ const App = () =>  {
         path="/doctor/update/:id"
         element={<UpdateDoctor/>}
         />
+        
+      <Route 
+      path="/patient/updatePatient/:id"
+      element={<UpdatePatient/>}/>
+
+
+
         <Route 
-        path="/doctor/bookappointment/"
+        path="/patient/bookappointment/"
         element={<BookAppointment/>}
         />
+         <Route 
+        path="/doctor/delete/:id"
+        element={<DeleteDoctor/>}
+        />
         <Route 
-        path="/doctor/home/"
+        path="/doctor/home"
         element={<DoctorHome/>}
         />
         <Route

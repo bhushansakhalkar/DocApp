@@ -70,48 +70,48 @@ router.post("/patient/login", async (req, res) => {
   router.post("/user", async (req, res) => {
     const { username, email, password,iid,account_type } = req.body;
   
-    // if (!username || typeof username !== "string") {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Invalid username",
-    //   });
-    // }
+    if (!username || typeof username !== "string") {
+      return res.json({
+        status: "error",
+        error: "Invalid username",
+      });
+    }
   
-    // if (!email || typeof email !== "string") {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Invalid email",
-    //   });
-    // }
+    if (!email || typeof email !== "string") {
+      return res.json({
+        status: "error",
+        error: "Invalid email",
+      });
+    }
   
-    // if (email.includes("@") !== true) {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Invalid email. Should contain @",
-    //   });
-    // }
+    if (email.includes("@") !== true) {
+      return res.json({
+        status: "error",
+        error: "Invalid email. Should contain @",
+      });
+    }
   
-    // if (email.includes(".com") !== true) {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Invalid email. Should contain .com",
-    //   });
-    // }
+    if (email.includes(".com") !== true) {
+      return res.json({
+        status: "error",
+        error: "Invalid email. Should contain .com",
+      });
+    }
   
-    // if (!plaintextpassword || typeof plaintextpassword !== "string") {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Invalid password",
-    //   });
-    // }
+    if (!plaintextpassword || typeof plaintextpassword !== "string") {
+      return res.json({
+        status: "error",
+        error: "Invalid password",
+      });
+    }
   
-    // if (plaintextpassword.length < 7) {
-    //   return res.json({
-    //     status: "error",
-    //     error: "Password too small. Min length should be 7",
-    //   });
-    // }
-    // const password = await bcrypt.hash(plaintextpassword, 12);
+    if (plaintextpassword.length < 7) {
+      return res.json({
+        status: "error",
+        error: "Password too small. Min length should be 7",
+      });
+    }
+ password = await bcrypt.hash(plaintextpassword, 12);
   
     try {
       const response = await user.create({
@@ -131,5 +131,129 @@ router.post("/patient/login", async (req, res) => {
   
     res.json({ status: "ok" });
   });
+
+  router.route('/').get(authenticateToken,(req,res)=>{
+    console.log(req.query)
+    const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const startIndex = (page-1) * limit
+    const endIndex = page * limit
+    Doctor.find()
+    .then((doc)=>{
+      let result = {}
+      if(endIndex < doc.length)
+      result.next = {
+          page:page +1,
+          limit:limit
+      }  
+      if(startIndex > 0){
+        result.prev = {
+            page:page - 1,
+            limit:limit
+        }
+      }
+     
+      result.result =  doc.slice(startIndex,endIndex)
+        res.json(result) 
+    } )
+    .catch(err=> res.status(400).json('Error: ' + err) )
+});
+
+function paginatedResults(model){
+    return(req,res,next)=>{
+        const page = parseInt(req.query.page)
+    const limit = parseInt(req.query.limit)
+
+    const startIndex = (page-1) * limit
+    const endIndex = page * limit
+
+    let result = {}
+    if(endIndex < model.length)
+    result.next = {
+        page:page +1,
+        limit:limit
+    }  
+    if(startIndex > 0){
+      result.prev = {
+          page:page - 1,
+          limit:limit
+      }
+
+      result.result =  model.slice(startIndex,endIndex)
+      res.paginatedResults = result
+      next()
+    }
+    }
+}
+
+
+router.delete('/deletePatient/:id', async(req, res) => {
+    const tempId = req.params.id
+    console.log(tempId)
+    patient.deleteOne({ _id: new Mongoose.Types.ObjectId(tempId) })
+        .then(() => {
+            res.json("Patient deleted")
+            console.log(res)
+        })
+        .catch((e) => {
+            console.log(e)
+        })
+
+});
+
+
+router.get('/myAppointments/:id',async(req,res)=>{
+    const app = await appointment.aggregate([{
+        $match: {
+            $and: [
+                { PatientId: { $eq: req.params.id } },
+                
+            ]
+        }
+    },
+    { "$addFields": { "Doctorid": { "$toObjectId": "$DoctorId" } } },
+    {
+        $lookup: {
+
+            from: "doctors",
+            localField: "Doctorid",
+
+            foreignField: "_id",
+            as: "details",
+
+        }
+    },
+
+    {
+        $unwind: {
+            path: "$details",
+            preserveNullAndEmptyArrays: true
+        }
+    },
+    {
+        $project:     
+          {
+            "_id":1,
+            "date":1,
+            "time":1,
+            "AppointmentInfo":1,
+            "Prescription":1,
+            "DoctorId":1,
+            "PatientId":1,
+            "Status":1,
+            "details.Fname":1,
+            "details.Lname":1,
+            "details.Address":1
+          }
+    }
+
+
+
+])
+
+res.json(app)
+
+})
 
 module.exports = router;
