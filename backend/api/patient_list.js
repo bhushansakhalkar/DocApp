@@ -68,7 +68,9 @@ router.post("/patient/login", async (req, res) => {
   });
 
   router.post("/user", async (req, res) => {
-    const { username, email, password,iid,account_type } = req.body;
+    const { username, email, iid,account_type } = req.body;
+
+    var password = req.body.password
   
     if (!username || typeof username !== "string") {
       return res.json({
@@ -112,7 +114,7 @@ router.post("/patient/login", async (req, res) => {
 //       });
 //     }
 //  password = await bcrypt.hash(plaintextpassword, 12);
-  
+    password = await bcrypt.hash(password, 12);
     try {
       const response = await user.create({
         username,
