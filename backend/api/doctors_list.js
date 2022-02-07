@@ -38,8 +38,7 @@ router.post('/api/login', async(req, res) => {
 
 
     // if (await bcrypt.compare(password, User.password)) {
-    //if(User.password === password){
-    if (await bcrypt.compare(password, User.password)) {
+    if(User.password === password){
         const token = jwt.sign({
 
                 id: User.id,
