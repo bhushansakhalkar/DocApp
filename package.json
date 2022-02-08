@@ -4,6 +4,11 @@
     "react-router-dom": "^6.2.1"
   },
   "scripts":{
-      "postinstall": "(cd backend && npm install && nodemon start) &&(cd frontend && npm install && npm start)" 
-  }
+       {
+          "install:frontend":"cd frontend && npm install && npm start",
+          "install:backend:":"cd backend && npm install && nodemon start"
+          
+          "postinstall":"run-p install:*"
+      }
+      }
 }
