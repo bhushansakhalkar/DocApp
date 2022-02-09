@@ -115,7 +115,7 @@ const DoctorHome = () => {
 
                     <div className="col-md-9">
                         <div className="row">
-                            <div className="col-md-4 mb-4">
+                            <div className="col-md-10 mb-12">
                             <Row  xs={1} md={2} lg={2} className="g-10">  
                                 {appointments.map((appointment)=>{
                                     // if(appointments.length == 0 || []){
@@ -126,7 +126,7 @@ const DoctorHome = () => {
                                     // }
                                     return(
                                     <Col>
-                                   <Card style={{ width: '20rem' }}>
+                                   <Card style={{ width: '24rem' }}>
                                   
                                     <Card.Body>
                                         <Card.Title>Name : {appointment.details.Fname +" "+ appointment.details.Lname}</Card.Title>
