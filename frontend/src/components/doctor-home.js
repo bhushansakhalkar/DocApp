@@ -114,7 +114,7 @@ const DoctorHome = () => {
                     <div className="col-md-9">
                         <div className="row">
                             <div className="col-md-4 mb-4">
-                                
+                            <Row  xs={1} md={2} lg={2} className="g-10">  
                                 {appointments.map((appointment)=>{
                                     // if(appointments.length == 0 || []){
                                         
@@ -123,7 +123,8 @@ const DoctorHome = () => {
                                     //     )
                                     // }
                                     return(
-                                    <Card style={{ width: '18rem' }}>
+                                    <Col>
+                                   <Card style={{ width: '20rem' }}>
                                   
                                     <Card.Body>
                                         <Card.Title>Name : {appointment.details.Fname +" "+ appointment.details.Lname}</Card.Title>
@@ -139,14 +140,16 @@ const DoctorHome = () => {
                                         }}>Click here for more info</Button>
                                     </Card.Body>
                                 </Card>
+                                </Col>
+                                
                                     )
                                         
                                 })}
-                                
+                                </Row>
                             </div>
                             
                         </div>
-
+                    
                     </div>
                 </div>
             </div>
