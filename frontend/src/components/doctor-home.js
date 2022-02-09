@@ -8,6 +8,8 @@ import { useNavigate,Link } from 'react-router-dom';
 import Cal from './Cal';
 import MyNavbar from './navbar';
 import DeleteDoctor from './doctor-delete';
+import { Col, Row } from "react-bootstrap";
+
 
 
 const DoctorHome = () => {
