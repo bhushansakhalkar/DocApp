@@ -43,12 +43,12 @@ const ViewAppointments=(props)=> {
         })
     }
     
-    function checked(e,index){
-        setDisabled(0.7)
+    // function checked(e,index){
+    //     setDisabled(0.7)
         
-        navigate('/doctor/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot}});
+    //     navigate('/doctor/bookappointment/',{state:{ind:index,dat:daydata,doc:doctor,sid:e._id,slot:e.timeslot}});
       
-    }
+    // }
 
 
     useEffect(()=>{
@@ -101,7 +101,6 @@ const ViewAppointments=(props)=> {
     <h2>Name: {doctor.Fname +"  "+ doctor.Lname}</h2>
     <h2>Specialization: {doctor.Specialization}</h2>
     <h3>Address: {doctor.Address}</h3>
-    <h4>Rating: {doctor.Rating}</h4>
     <h4>License: {doctor.License}</h4>
     <div>
             <h2>Appointment</h2>
