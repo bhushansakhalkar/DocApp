@@ -142,7 +142,7 @@ const DoctorList = () => {
             <Card.Subtitle className="mb-2 text-muted">Qualification: {doctor.Qualification}</Card.Subtitle>
             <Card.Text>
             Specialization: {doctor.Specialization}<br></br>
-            Address :{doctor.Address}
+            Address :{doctor.Address}<br></br>
             City : {doctor.City}
             </Card.Text>
             <Card.Link><Link to={"doctordetails/"+doctor._id}> More Info</Link></Card.Link>
