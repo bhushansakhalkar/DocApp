@@ -60,7 +60,7 @@ router.post('/api/login', async(req, res) => {
 
 
 
-    res.json({ status: "error", data: "Invalid username/password" });
+    res.json({ status: "error", error: "Invalid username/password" });
 
 });
 
