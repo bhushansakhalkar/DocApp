@@ -55,10 +55,10 @@ const DoctorHome = () => {
         DoctorDataService.getAppointmentsByDate(date,id,localStorage.getItem('token'))
         .then((response)=>{
             
-            // if(response.data.status == 'error'){
-            //     alert("Access Forbidden")
-            //     navigate('/')
-            // }
+            if(response.data.status == 'error'){
+                alert("Access Forbidden")
+                navigate('/')
+            }
             console.log(response.data)
             app = response.data
             setAppointments(app)
@@ -116,9 +116,8 @@ const DoctorHome = () => {
                             <div className="col-md-4 mb-4">
                                 
                                 {appointments.map((appointment)=>{
-                               
-                                    // if(appointment.length == 0){
-                                    //     console.log(appointment)
+                                    // if(appointments.length == 0 || []){
+                                        
                                     //     return(
                                     //         <h2>You have no Appointments today!</h2>
                                     //     )

@@ -164,7 +164,13 @@ const MyAppointments=(props)=> {
                             <div className="col-md-12 mb-10">
     <Row  xs={1} md={2} lg={3} className="g-4">
     {appointments.map((appointment)=>{
-            console.log(appointment)
+        //   if(appointments.length == 0 || []){
+                                        
+        //     return(
+        //         <h2>You have no Appointments today!</h2>
+        //     )
+        // }
+        console.log(appointment)
             return(
                <Col>
                 <Card className='Card' style={{ width: '23rem',marginBottom:'1rem',marginRight:'10rem'}}>
@@ -175,7 +181,7 @@ const MyAppointments=(props)=> {
             Appointment Date : {appointment.date}<br></br>
             Appointment Time :{appointment.time}<br></br>
             Doctor's Address :{appointment.details.Address}<br></br>
-            Prescription :{appointment.details.Prescription}
+            Prescription :{appointment.Prescription}
             </Card.Text>
             {/* <Card.Link><Link to={"#"}> More Info</Link></Card.Link> */}
         </Card.Body>

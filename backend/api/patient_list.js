@@ -112,7 +112,7 @@ router.post("/patient/login", async (req, res) => {
 //         error: "Password too small. Min length should be 7",
 //       });
 //     }
- password = await bcrypt.hash(plaintextpassword, 12); 
+//  password = await bcrypt.hash(plaintextpassword, 12); 
   
     try {
       const response = await user.create({
@@ -196,6 +196,12 @@ router.delete('/deletePatient/:id', async(req, res) => {
         .then(() => {
             res.json("Patient deleted")
             console.log(res)
+            user.deleteOne({iid:tempId})
+            .then(()=>{
+                console.log(res)
+            })
+            .catch((e)=>{
+                console.log(e)})
         })
         .catch((e) => {
             console.log(e)

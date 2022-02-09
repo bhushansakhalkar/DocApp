@@ -139,10 +139,11 @@ const DoctorList = () => {
                 <Card className='Card' style={{ width: '25rem',marginBottom:'1rem',marginRight:'2rem'}}>
         <Card.Body style={{flex:1}}>
             <Card.Title>{doctor.Fname +"  "+ doctor.Lname}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{doctor.Address}</Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted">Qualification: {doctor.Qualification}</Card.Subtitle>
             <Card.Text>
-            Some quick example text to build on the card title and make up the bulk of
-            the card's content.
+            Specialization: {doctor.Specialization}<br></br>
+            Address :{doctor.Address}
+            City : {doctor.City}
             </Card.Text>
             <Card.Link><Link to={"doctordetails/"+doctor._id}> More Info</Link></Card.Link>
         </Card.Body>

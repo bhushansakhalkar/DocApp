@@ -42,7 +42,7 @@ const Login = ()=>{
             
         } else {
             console.log(result)
-            alert(result.data)
+            alert(result.error)
         }
        
         

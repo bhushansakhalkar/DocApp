@@ -169,7 +169,7 @@ const UpdateDoctor=(props)=> {
     <button className="danger" onClick={deleteProfile}>Delete</button>
   </Modal.Footer>
   </Modal>
-    <MyNavbar title='DocApp' pathThird={'doctor/home'} pathFourth={()=>{
+    <MyNavbar title='DocApp' pathThird={'/doctor/home'} pathFourth={()=>{
             localStorage.removeItem("iid")
             localStorage.removeItem("token")
             navigate("/")

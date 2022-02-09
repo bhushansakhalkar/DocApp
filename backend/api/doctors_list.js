@@ -558,6 +558,13 @@ router.delete('/deletePatient/:id', async(req, res) => {
         .then(() => {
             res.json("Patient deleted")
             console.log(res)
+            Usermodel.deleteOne({iid:tempId})
+            .then(()=>{
+                console.log(res)
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
         })
         .catch((e) => {
             console.log(e)
@@ -572,6 +579,13 @@ router.delete('/deleteDoctor/:id', async(req, res) => {
         .then(() => {
             res.json("Doctor deleted")
             console.log(res)
+            Usermodel.deleteOne({iid:tempId})
+            .then(()=>{
+                console.log(res)
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
         })
         .catch((e) => {
             console.log(e)
