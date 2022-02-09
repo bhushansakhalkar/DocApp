@@ -132,7 +132,7 @@ const DoctorHome = () => {
                                             Appointment Info : {appointment.AppointmentInfo} <br />
                                             Appointment Status: {appointment.Status} <br />
                                             Patient's number  : {appointment.details.Phone}<br />
-                                            Appointment date  : {appointment.details.date}<br />
+                                            Appointment date  : {appointment.date}<br />
                                             </Card.Text>
                                         <Button variant="primary" onClick={()=>{
                                             navigate('/doctor/viewappointments',{state:appointment});

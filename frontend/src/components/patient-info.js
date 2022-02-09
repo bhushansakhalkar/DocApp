@@ -107,8 +107,8 @@ const PatientInfo = () => {
                                         Insurance Card Number : {p.details.Insurance.cardNumber}<br></br>
                                         Insurance Number      : {p.details.Insurance.insuranceNumber}<br></br>
                                         Insurance Provider    : {p.details.Insurance.insuranceProvider} <br></br>
-                                        Insurance Card Expiry : {p.details.Insurance.expiryDate}
-                                                Date
+                                        Insurance Card ExpiryDate : {p.details.Insurance.expiryDate}
+                                                
                                         
                                        
                                        
