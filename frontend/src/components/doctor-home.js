@@ -126,12 +126,13 @@ const DoctorHome = () => {
                                     <Card style={{ width: '18rem' }}>
                                   
                                     <Card.Body>
-                                        <Card.Title>{appointment.details.Fname +" "+ appointment.details.Lname}</Card.Title>
+                                        <Card.Title>Name : {appointment.details.Fname +" "+ appointment.details.Lname}</Card.Title>
                                         <Card.Text>
-                                            {appointment.time} <br />
-                                            {appointment.AppointmentInfo} <br />
-                                            {appointment.status} <br />
-                                            {appointment.details.Phone}<br />
+                                            Appointment Time : {appointment.time} <br />
+                                            Appointment Info : {appointment.AppointmentInfo} <br />
+                                            Appointment Status: {appointment.Status} <br />
+                                            Patient's number  : {appointment.details.Phone}<br />
+                                            Appointment date  : {appointment.details.date}<br />
                                             </Card.Text>
                                         <Button variant="primary" onClick={()=>{
                                             navigate('/doctor/viewappointments',{state:appointment});

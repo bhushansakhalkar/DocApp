@@ -92,30 +92,23 @@ const PatientInfo = () => {
 
                                     <Card.Text>
                                     <h5> Appointment Details </h5> 
-
                                         Appointment Slot: {p.time}<br />  
-
-                                        Appointment Status: <br /><br /> 
-
+                                        Appointment Date : {p.date}<br></br>
+                                        Appointment Status:{p.Status} <br />
+                                        Appointment Information:{p.AppointmentInfo}
                                         <h5> Patient Details </h5> 
+                                        Name      : {p.details.Fname +" "+p.details.Lname} <br /> 
+                                        Address   :{p.details.Insurance.address} <br /> 
+                                        BirthDate : {p.details.Insurance.birthDate}
+                                        City      :{p.details.City} <br /> 
+                                        Phone     :{p.details.Phone}<br /> 
 
-                                        {p.details.Fname +" "+p.details.Lname} <br /> 
-
-                                        {p.details.Address} <br /> 
-
- 
-
-                                        {p.details.city} <br /> 
-
- 
-
-                                        {p.details.Phone}<br /> 
-
-                                        <h5> Insurance Details </h5><br/>
-                                        {p.details.Insurance.cardNumber}<br></br>
-                                        {p.details.Insurance.insuranceNumber}<br></br>
-                                        {p.details.Insurance.insuranceProvider} <br></br>
-
+                                        <h5> Insurance Details </h5>
+                                        Insurance Card Number : {p.details.Insurance.cardNumber}<br></br>
+                                        Insurance Number      : {p.details.Insurance.insuranceNumber}<br></br>
+                                        Insurance Provider    : {p.details.Insurance.insuranceProvider} <br></br>
+                                        Insurance Card Expiry : {p.details.Insurance.expiryDate}
+                                                Date
                                         
                                        
                                        
